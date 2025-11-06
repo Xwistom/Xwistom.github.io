@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学之智慧 - 个人展示网站</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0a192f',
+                        secondary: '#172a45',
+                        accent: '#64ffda',
+                        highlight: '#00a8ff',
+                        light: '#e6f1ff',
+                        dark: '#020c1b'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'twinkle': 'twinkle 4s ease-in-out infinite',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'slide-in': 'slideIn 0.8s ease-out forwards',
+                        'fade-in': 'fadeIn 1s ease-out forwards'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        floatHeart: {
+                            '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-20px) rotate(10deg)' }
+                        },
+                        floatStar: {
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-15px) scale(1.2)' }
+                        },
+                        floatCircle: {
+                            '0%, 100%': { transform: 'translateY(0) scale(1)' },
+                            '50%': { transform: 'translateY(-25px) scale(1.3)' }
+                        },
+                        twinkle: {
+                            '0%, 100%': { opacity: 0.2 },
+                            '50%': { opacity: 1 }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(50px)', opacity: 0 },
+                            '100%': { transform: 'translateY(0)', opacity: 1 }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-50px)', opacity: 0 },
+                            '100%': { transform: 'translateX(0)', opacity: 1 }
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0 },
+                            '100%': { opacity: 1 }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            .text-gradient {
+                background-clip: text;
+                -webkit-background-clip: text;
+                color: transparent;
+                background-image: linear-gradient(to right, #64ffda, #00a8ff);
+            }
+            .bg-blur {
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .nav-link {
+                position: relative;
+            }
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: -2px;
+                left: 0;
+                background-color: #64ffda;
+                transition: width 0.3s ease;
+            }
+            .nav-link:hover::after {
+                width: 100%;
+            }
+            .project-card {
+                transition: all 0.3s ease;
+            }
+            .project-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .skill-bar {
+                position: relative;
+                height: 8px;
+                border-radius: 4px;
+                background-color: rgba(255, 255, 255, 0.1);
+                overflow: hidden;
+            }
+            .skill-progress {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                background: linear-gradient(90deg, #64ffda, #00a8ff);
+                border-radius: 4px;
+                transition: width 1.5s ease-in-out;
+            }
+            .bg-element {
+                position: absolute;
+                opacity: 0;
+            }
+            .meteor {
+                width: 2px;
+                background: linear-gradient(to bottom, transparent, white);
+                animation: meteor 3s linear infinite;
+            }
+            /* 修改爱心、星星和圆圈的样式，使尾巴方向与运动方向一致 */
+.heart {
+    color: #ff6b8b;
+    font-size: 14px;
+    position: relative;
+    animation: moveLeftDown 8s linear infinite;
+}
+.heart::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -20px; /* 修改为右侧，与运动方向一致 */
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(to left, transparent, rgba(255, 107, 139, 0.6)); /* 修改渐变方向 */
+    transform: translateY(-50%);
+}
+
+.star {
+    color: #fff;
+    font-size: 12px;
+    position: relative;
+    animation: moveLeftDown 10s linear infinite;
+}
+.star::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -15px; /* 修改为右侧，与运动方向一致 */
+    width: 15px;
+    height: 2px;
+    background: linear-gradient(to left, transparent, rgba(255, 255, 255, 0.5)); /* 修改渐变方向 */
+    transform: translateY(-50%);
+}
+
+.circle {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(100, 255, 218, 0.8);
+    position: relative;
+    animation: moveLeftDown 12s linear infinite;
+}
+.circle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -25px; /* 修改为右侧，与运动方向一致 */
+    width: 25px;
+    height: 2px;
+    background: linear-gradient(to left, transparent, rgba(100, 255, 218, 0.6)); /* 修改渐变方向 */
+    transform: translateY(-50%);
+}
+            @keyframes meteor {
+                0% {
+                    transform: translateY(-100%);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(100vh);
+                    opacity: 0;
+                }
+            }
+            @keyframes moveLeftDown {
+                0% {
+                    transform: translate(0, 0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translate(-300px, 300px);
+                    opacity: 0;
+                }
+            }
+            @keyframes shootHeart {
+                0% {
+                    transform: scale(1) rotate(0deg);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.2) rotate(5deg);
+                }
+                100% {
+                    transform: scale(1) rotate(0deg);
+                    opacity: 1;
+                }
+            }
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0) scale(1);
+                }
+                50% {
+                    transform: translateY(-10px) scale(1.1);
+                }
+            }
+        }
+    </style>
+</head>
+<body class="bg-primary text-light font-serif">
+    <!-- 流星背景 -->
+    <div id="meteor-container" class="fixed inset-0 z-0 overflow-hidden pointer-events-none"></div>
+
+    <!-- 导航栏 -->
+    <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-transparent">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-accent">学之智慧</a>
+
+            <!-- 桌面导航 -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#hero" class="nav-link text-light hover:text-accent transition-all-300">首页</a>
+                <a href="#about" class="nav-link text-light hover:text-accent transition-all-300">关于我</a>
+                <a href="#projects" class="nav-link text-light hover:text-accent transition-all-300">学习轨迹</a>
+                <a href="#skills" class="nav-link text-light hover:text-accent transition-all-300">技能</a>
+                <a href="#contact" class="nav-link text-light hover:text-accent transition-all-300">联系方式</a>
+            </div>
+
+            <!-- 移动端菜单按钮 -->
+            <button id="menu-toggle" class="md:hidden text-light focus:outline-none">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- 移动端导航菜单 -->
+        <div id="mobile-menu" class="hidden md:hidden bg-secondary bg-opacity-95 bg-blur w-full">
+            <div class="container mx-auto px-4 py-4 flex flex-col space-y-4">
+                <a href="#hero" class="mobile-nav-link text-light hover:text-accent transition-all-300 py-2">首页</a>
+                <a href="#about" class="mobile-nav-link text-light hover:text-accent transition-all-300 py-2">关于我</a>
+                <a href="#projects" class="mobile-nav-link text-light hover:text-accent transition-all-300 py-2">学习轨迹</a>
+                <a href="#skills" class="mobile-nav-link text-light hover:text-accent transition-all-300 py-2">技能</a>
+                <a href="#contact" class="mobile-nav-link text-light hover:text-accent transition-all-300 py-2">联系方式</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首屏英雄区 -->
+    <section id="hero" class="min-h-screen flex items-center justify-center relative pt-16">
+        <div class="container mx-auto px-4 z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 text-shadow animate-fade-in" style="animation-delay: 0.2s;">
+                    你好，我是 <span class="text-gradient">学之智慧</span>
+                </h1>
+                <p class="text-xl md:text-2xl lg:text-3xl mb-8 text-light/80 animate-fade-in" style="animation-delay: 0.4s;">
+                    一个愿意不断提升自己的人
+                </p>
+                <p class="text-lg md:text-xl mb-12 max-w-2xl mx-auto text-light/70 animate-fade-in" style="animation-delay: 0.6s;">
+                    专注于享受生活的美好，并努力用自己的方式去创造未来
+                </p>
+                <div class="flex flex-wrap justify-center gap-4 animate-fade-in" style="animation-delay: 0.8s;">
+                    <a href="#projects" class="px-8 py-3 bg-accent text-primary font-semibold rounded-md hover:bg-accent/90 transition-all-300">
+                        走进我
+                    </a>
+                    <a href="#contact" class="px-8 py-3 border border-accent text-accent font-semibold rounded-md hover:bg-accent/10 transition-all-300">
+                        联系我
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 向下滚动指示器 -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <a href="#about" class="text-accent hover:text-accent/80 transition-all-300">
+                <i class="fa fa-chevron-down text-2xl"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- 关于我 -->
+    <section id="about" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-gradient">关于我</h2>
+
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <!-- 大学生形象 -->
+                    <div class="w-full md:w-1/3 flex justify-center animate-slide-in">
+                        <div class="relative w-full max-w-xs aspect-square flex items-center justify-center">
+                            <div class="absolute inset-0 bg-gradient-to-br from-accent/20 to-pink-500/20 rounded-full blur-xl animate-pulse"></div>
+                            <div class="relative z-10 flex items-center justify-center">
+                                <div class="w-48 h-48 bg-secondary rounded-full flex items-center justify-center">
+                                    <i class="fa fa-graduation-cap text-6xl text-accent animate-float"></i>
+                                </div>
+
+                                <!-- 发射爱心动画 -->
+                                <div id="heart发射-container" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 个人介绍 -->
+                    <div class="w-full md:w-2/3 animate-slide-up">
+                        <h3 class="text-2xl font-bold mb-4 text-accent">背景</h3>
+                        <p class="text-light/80 mb-6 leading-relaxed">
+                            我是学之智慧，一名刚刚踏入大学校园的软件工程专业新生。虽然对编程世界还充满好奇与未知，但我对技术的热情和对未来的憧憬让我充满动力。
+                        </p>
+                        <p class="text-light/80 mb-6 leading-relaxed">
+                            选择软件工程专业是因为我相信代码能够创造无限可能。虽然目前还处于学习阶段，但我期待通过大学四年的学习，能够掌握扎实的编程基础，理解计算机科学的精髓，并最终能够创造出有价值的产品。
+                        </p>
+
+                        <h3 class="text-2xl font-bold mb-4 mt-8 text-accent">兴趣与爱好</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-code text-accent"></i>
+                                <span>探索编程</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-book text-accent"></i>
+                                <span>阅读技术书籍</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-gamepad text-accent"></i>
+                                <span>游戏开发</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-music text-accent"></i>
+                                <span>听音乐</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-basketball text-accent"></i>
+                                <span>打篮球</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa fa-film text-accent"></i>
+                                <span>看电影</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技能 -->
+    <section id="skills" class="py-20 bg-secondary relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-gradient">技能</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <!-- 技术技能 -->
+                    <div class="animate-slide-up">
+                        <h3 class="text-2xl font-bold mb-8 text-accent">技术技能</h3>
+
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">HTML5 / CSS3 / JavaScript</span>
+                                    <span>待探索</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 0%;" data-width="0%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">React / Vue</span>
+                                    <span>待探索</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 0%;" data-width="0%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">TypeScript</span>
+                                    <span>待探索</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 0%;" data-width="0%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">Node.js / Express</span>
+                                    <span>待探索</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 0%;" data-width="0%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">Python</span>
+                                    <span>10%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 0%;" data-width="10%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">C / C++</span>
+                                    <span>10%</span>
+                                </div>
+                                <div class="skill-bar">
+                                    <div class="skill-progress" style="width: 0%;" data-width="10%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 工具与其他技能 -->
+                    <div class="animate-slide-up" style="animation-delay: 0.2s;">
+                        <h3 class="text-2xl font-bold mb-8 text-accent">工具与其他技能</h3>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-primary p-4 rounded-lg hover:bg-primary/80 transition-all-300">
+                                <h4 class="font-semibold mb-2 text-accent">设计工具</h4>
+                                <ul class="space-y-2 text-light/80">
+                                    <li>Figma</li>
+                                    <li>Adobe XD</li>
+                                    <li>Photoshop</li>
+                                    <li>Illustrator</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-primary p-4 rounded-lg hover:bg-primary/80 transition-all-300">
+                                <h4 class="font-semibold mb-2 text-accent">开发工具</h4>
+                                <ul class="space-y-2 text-light/80">
+                                    <li>VS Code</li>
+                                    <li>Git / GitHub</li>
+                                    <li>Webpack</li>
+                                    <li>Docker</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-primary p-4 rounded-lg hover:bg-primary/80 transition-all-300">
+                                <h4 class="font-semibold mb-2 text-accent">方法论</h4>
+                                <ul class="space-y-2 text-light/80">
+                                    <li>敏捷开发</li>
+                                    <li>TDD / BDD</li>
+                                    <li>CI / CD</li>
+                                    <li>设计系统</li>
+                                </ul>
+                            </div>
+
+                            <div class="bg-primary p-4 rounded-lg hover:bg-primary/80 transition-all-300">
+                                <h4 class="font-semibold mb-2 text-accent">软技能</h4>
+                                <ul class="space-y-2 text-light/80">
+                                    <li>问题解决</li>
+                                    <li>团队协作</li>
+                                    <li>沟通能力</li>
+                                    <li>时间管理</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 技能雷达图 -->
+                        <div class="mt-8 bg-primary p-4 rounded-lg">
+                            <h4 class="font-semibold mb-4 text-accent text-center">技能雷达</h4>
+                            <div class="w-full h-64">
+                                <canvas id="skillsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 学习轨迹 -->
+    <section id="projects" class="py-20 relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-gradient">学习轨迹</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- 项目1 -->
+                    <div class="project-card bg-secondary rounded-lg overflow-hidden shadow-lg animate-slide-up">
+                        <div class="relative overflow-hidden group">
+                            <div class="w-full h-48 bg-primary flex items-center justify-center">
+                                <i class="fa fa-code text-6xl text-accent"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded">Python</span>
+                                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded">基础语法</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-accent">第一个Python程序</h3>
+                            <p class="text-light/70 mb-4">
+                                这是我学习编程的第一个项目，一个简单的计算器程序。虽然功能简单，但让我理解了变量、函数和基本逻辑。
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light/50">2024年9月</span>
+                                <a href="#" class="text-accent hover:text-accent/80 transition-all-300 flex items-center gap-1">
+                                    查看详情 <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 项目2 -->
+                    <div class="project-card bg-secondary rounded-lg overflow-hidden shadow-lg animate-slide-up" style="animation-delay: 0.2s;">
+                        <div class="relative overflow-hidden group">
+                            <div class="w-full h-48 bg-primary flex items-center justify-center">
+                                <i class="fa fa-terminal text-6xl text-accent"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded">C语言</span>
+                                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded">数据结构</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-accent">数据结构练习</h3>
+                            <p class="text-light/70 mb-4">
+                                学习C语言时完成的数据结构练习项目，包括链表、栈和队列的实现。这是理解计算机科学基础的重要一步。
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light/50">2024年10月</span>
+                                <a href="#" class="text-accent hover:text-accent/80 transition-all-300 flex items-center gap-1">
+                                    查看详情 <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 项目3 -->
+                    <div class="project-card bg-secondary rounded-lg overflow-hidden shadow-lg animate-slide-up" style="animation-delay: 0.4s;">
+                        <div class="relative overflow-hidden group">
+                            <div class="w-full h-48 bg-primary flex items-center justify-center">
+                                <i class="fa fa-globe text-6xl text-accent"></i>
+                            </div>
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                                <div class="p-4 w-full">
+                                    <div class="flex flex-wrap gap-2">
+                                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded">HTML/CSS</span>
+                                        <span class="px-2 py-1 bg-accent/20 text-accent text-xs rounded">个人网站</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-2 text-accent">个人网站初尝试</h3>
+                            <p class="text-light/70 mb-4">
+                                这是我第一次尝试制作网页，虽然简单但让我对前端开发产生了浓厚兴趣。这个网站记录了我的学习历程和成长。
+                            </p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-light/50">2024年11月</span>
+                                <a href="#" class="text-accent hover:text-accent/80 transition-all-300 flex items-center gap-1">
+                                    查看详情 <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 查看更多按钮 -->
+                <div class="text-center mt-12">
+                    <button id="view-more-projects" class="px-8 py-3 border border-accent text-accent font-semibold rounded-md hover:bg-accent/10 transition-all-300">
+                        查看完整学习轨迹
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系方式 -->
+    <section id="contact" class="py-20 bg-secondary relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center text-gradient">联系方式</h2>
+
+                <div class="flex flex-col md:flex-row gap-12">
+                    <!-- 联系信息 -->
+                    <div class="w-full md:w-1/2 animate-slide-up">
+                        <h3 class="text-2xl font-bold mb-8 text-accent">联系信息</h3>
+
+                        <div class="space-y-6">
+                            <div class="flex items-start gap-4">
+                                <div class="bg-primary p-3 rounded-full text-accent">
+                                    <i class="fa fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">电子邮箱</h4>
+                                    <a href="mailto:contact@xuezhizhihui.com" class="text-light/80 hover:text-accent transition-all-300">
+                                        contact@xuezhizhihui.com
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="bg-primary p-3 rounded-full text-accent">
+                                    <i class="fa fa-github"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">GitHub</h4>
+                                    <a href="https://github.com/xuezhizhihui" target="_blank" class="text-light/80 hover:text-accent transition-all-300">
+                                        github.com/xuezhizhihui
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4">
+                                <div class="bg-primary p-3 rounded-full text-accent">
+                                    <i class="fa fa-wechat"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">微信</h4>
+                                    <a href="#" class="text-light/80 hover:text-accent transition-all-300">
+                                        xuezhizhihui
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 社交媒体链接 -->
+                        <div class="mt-12">
+                            <h4 class="font-semibold mb-4">社交媒体</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-primary p-3 rounded-full text-light hover:bg-accent hover:text-primary transition-all-300">
+                                    <i class="fa fa-wechat"></i>
+                                </a>
+                                <a href="#" class="bg-primary p-3 rounded-full text-light hover:bg-accent hover:text-primary transition-all-300">
+                                    <i class="fa fa-qq"></i>
+                                </a>
+                                <a href="#" class="bg-primary p-3 rounded-full text-light hover:bg-accent hover:text-primary transition-all-300">
+                                    <i class="fa fa-video-camera"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 联系表单 -->
+                    <div class="w-full md:w-1/2 animate-slide-up" style="animation-delay: 0.2s;">
+                        <h3 class="text-2xl font-bold mb-8 text-accent">发送消息</h3>
+
+                        <form id="contact-form" class="space-y-6">
+                            <div>
+                                <label for="name" class="block mb-2 text-sm font-medium">姓名</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 bg-primary border border-light/20 rounded-md focus:outline-none focus:border-accent text-light" placeholder="请输入您的姓名" required>
+                            </div>
+
+                            <div>
+                                <label for="email" class="block mb-2 text-sm font-medium">电子邮箱</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 bg-primary border border-light/20 rounded-md focus:outline-none focus:border-accent text-light" placeholder="请输入您的电子邮箱" required>
+                            </div>
+
+                            <div>
+                                <label for="subject" class="block mb-2 text-sm font-medium">主题</label>
+                                <input type="text" id="subject" class="w-full px-4 py-3 bg-primary border border-light/20 rounded-md focus:outline-none focus:border-accent text-light" placeholder="请输入消息主题" required>
+                            </div>
+
+                            <div>
+                                <label for="message" class="block mb-2 text-sm font-medium">消息</label>
+                                <textarea id="message" rows="5" class="w-full px-4 py-3 bg-primary border border-light/20 rounded-md focus:outline-none focus:border-accent text-light" placeholder="请输入您的消息内容" required></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full px-6 py-3 bg-accent text-primary font-semibold rounded-md hover:bg-accent/90 transition-all-300">
+                                发送消息
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="py-12 bg-primary relative">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-6 md:mb-0">
+                        <h3 class="text-2xl font-bold text-accent mb-2">学之智慧</h3>
+                        <p class="text-light/60">一个愿意不断提升自己的人</p>
+                    </div>
+
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <a href="#hero" class="text-light/60 hover:text-accent transition-all-300">首页</a>
+                        <a href="#about" class="text-light/60 hover:text-accent transition-all-300">关于我</a>
+                        <a href="#projects" class="text-light/60 hover:text-accent transition-all-300">学习轨迹</a>
+                        <a href="#skills" class="text-light/60 hover:text-accent transition-all-300">技能</a>
+                        <a href="#contact" class="text-light/60 hover:text-accent transition-all-300">联系方式</a>
+                    </div>
+                </div>
+
+                <hr class="border-light/10 my-8">
+
+                <div class="text-center text-light/40 text-sm">
+                    <p>&copy; 2024 学之智慧. 保留所有权利.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-accent text-primary p-3 rounded-full shadow-lg opacity-0 invisible transition-all duration-300 hover:bg-accent/90">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+    <script>
+        // DOM元素
+        const navbar = document.getElementById('navbar');
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const backToTopButton = document.getElementById('back-to-top');
+        const contactForm = document.getElementById('contact-form');
+        const viewMoreProjectsButton = document.getElementById('view-more-projects');
+        const skillBars = document.querySelectorAll('.skill-progress');
+        const meteorContainer = document.getElementById('meteor-container');
+
+        // 导航栏滚动效果
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-primary', 'bg-opacity-95', 'bg-blur', 'shadow-lg');
+                navbar.classList.remove('bg-transparent');
+            } else {
+                navbar.classList.remove('bg-primary', 'bg-opacity-95', 'bg-blur', 'shadow-lg');
+                navbar.classList.add('bg-transparent');
+            }
+
+            // 返回顶部按钮显示/隐藏
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.add('opacity-0', 'invisible');
+                backToTopButton.classList.remove('opacity-100', 'visible');
+            }
+
+            // 检查元素是否在视口中，添加动画
+            checkScrollAnimation();
+        });
+
+        // 移动端菜单切换
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 移动端菜单项点击后关闭菜单
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 返回顶部按钮点击事件
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80, // 考虑导航栏高度
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 联系表单提交
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // 获取表单数据
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+
+            // 模拟表单提交
+            alert(`感谢您的留言，${name}！\n我们已收到您的消息，将尽快回复您。`);
+
+            // 重置表单
+            contactForm.reset();
+        });
+
+        // 查看更多项目按钮点击事件
+        viewMoreProjectsButton.addEventListener('click', () => {
+            alert('更多学习轨迹正在整理中，敬请期待！');
+        });
+
+        // 技能雷达图
+        const createSkillsChart = () => {
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['前端开发', 'UI/UX设计', 'JavaScript', 'React', 'Node.js', 'Python'],
+                    datasets: [{
+                        label: '技能水平',
+                        data: [0, 0, 0, 0, 0, 10],
+                        backgroundColor: 'rgba(100, 255, 218, 0.2)',
+                        borderColor: 'rgba(100, 255, 218, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(100, 255, 218, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(100, 255, 218, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            angleLines: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            pointLabels: {
+                                color: 'rgba(255, 255, 255, 0.7)',
+                                font: {
+                                    family: 'Poppins',
+                                    size: 11
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        };
+
+        // 检查元素是否在视口中，添加动画
+        const checkScrollAnimation = () => {
+            // 技能条动画
+            skillBars.forEach(bar => {
+                const rect = bar.getBoundingClientRect();
+                const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+                if (rect.top <= windowHeight * 0.85) {
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width;
+                }
+            });
+
+            // 其他元素的动画检查
+            document.querySelectorAll('.animate-slide-up, .animate-slide-in, .animate-fade-in').forEach(element => {
+                const rect = element.getBoundingClientRect();
+                const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
+                if (rect.top <= windowHeight * 0.85 && !element.classList.contains('animated')) {
+                    element.classList.add('animated');
+                }
+            });
+        };
+
+        // 创建多样化背景元素
+        const createBackgroundElements = () => {
+            // 清除现有元素
+            meteorContainer.innerHTML = '';
+
+            // 元素类型和数量配置
+            const elementTypes = [
+                { type: 'meteor', count: 15, color: 'white' },
+                { type: 'heart', count: 8, color: '#ff6b8b' },
+                { type: 'star', count: 12, color: 'white' },
+                { type: 'circle', count: 10, color: '#64ffda' }
+            ];
+
+            // 创建所有元素
+            elementTypes.forEach(config => {
+                for (let i = 0; i < config.count; i++) {
+                    let element;
+
+                    // 根据类型创建不同元素
+                    if (config.type === 'meteor') {
+                        element = document.createElement('div');
+                        element.classList.add('bg-element', 'meteor');
+
+                        // 流星特定属性
+                        const height = 50 + Math.random() * 150;
+                        element.style.height = `${height}px`;
+                        const speedMultiplier = 0.5 + Math.random() * 1.5; // 0.5到2倍速度
+                        element.style.animationDuration = `${(2 + Math.random() * 3) / speedMultiplier}s`;
+                    }
+                    else if (config.type === 'heart') {
+                        element = document.createElement('i');
+                        element.classList.add('bg-element', 'heart', 'fa', 'fa-heart');
+
+                        // 爱心特定属性
+                        const size = 10 + Math.random() * 10;
+                        element.style.fontSize = `${size}px`;
+                        element.style.color = config.color;
+                        const speedMultiplier = 0.5 + Math.random() * 1.5; // 0.5到2倍速度
+                        element.style.animationDuration = `${(8 + Math.random() * 4) / speedMultiplier}s`;
+
+                        // 修改尾巴方向与运动方向反向
+                        element.style.transform = 'rotate(180deg)';
+                    }
+                    else if (config.type === 'star') {
+                        element = document.createElement('i');
+                        element.classList.add('bg-element', 'star', 'fa', 'fa-star');
+
+                        // 星星特定属性
+                        const size = 8 + Math.random() * 8;
+                        element.style.fontSize = `${size}px`;
+                        element.style.color = config.color;
+                        const speedMultiplier = 0.5 + Math.random() * 1.5; // 0.5到2倍速度
+                        element.style.animationDuration = `${(10 + Math.random() * 5) / speedMultiplier}s`;
+
+                        // 修改尾巴方向与运动方向反向
+                        element.style.transform = 'rotate(180deg)';
+                    }
+                    else if (config.type === 'circle') {
+                        element = document.createElement('div');
+                        element.classList.add('bg-element', 'circle');
+
+                        // 圆圈特定属性
+                        const size = 4 + Math.random() * 12;
+                        element.style.width = `${size}px`;
+                        element.style.height = `${size}px`;
+                        element.style.backgroundColor = config.color;
+                        element.style.opacity = 0.3 + Math.random() * 0.7;
+                        const speedMultiplier = 0.5 + Math.random() * 1.5; // 0.5到2倍速度
+                        element.style.animationDuration = `${(12 + Math.random() * 6) / speedMultiplier}s`;
+
+                        // 修改尾巴方向与运动方向反向
+                        element.style.transform = 'rotate(180deg)';
+                    }
+
+                    // 通用属性
+                    const delay = Math.random() * 10;
+
+                    // 根据元素类型设置不同的初始位置和动画
+                    if (config.type === 'meteor') {
+                        // 流星从顶部随机位置垂直落下
+                        const left = Math.random() * 100;
+                        element.style.left = `${left}%`;
+                        element.style.top = '-50px';
+                    } else {
+                        // 其他元素从右侧或顶部进入，向左下角移动
+                        if (Math.random() > 0.5) {
+                            // 从右侧进入
+                            const top = Math.random() * 50;
+                            element.style.left = '110%';
+                            element.style.top = `${top}%`;
+                        } else {
+                            // 从顶部进入
+                            const left = 50 + Math.random() * 50;
+                            element.style.left = `${left}%`;
+                            element.style.top = '-50px';
+                        }
+                    }
+
+                    element.style.animationDelay = `${delay}s`;
+
+                    // 添加到容器
+                    meteorContainer.appendChild(element);
+
+                    // 触发动画
+                    setTimeout(() => {
+                        element.style.opacity = 1;
+                    }, delay * 1000);
+                }
+            });
+        };
+
+        // 创建发射爱心动画
+        const createShootingHearts = () => {
+            const container = document.getElementById('heart发射-container');
+            if (!container) return;
+
+            // 创建一个爱心元素
+            const heart = document.createElement('i');
+            heart.classList.add('fa', 'fa-heart');
+            heart.style.color = '#ff6b8b';
+            heart.style.fontSize = `${10 + Math.random() * 15}px`;
+            heart.style.opacity = '0';
+
+            // 随机初始位置（从火柴人手中发射）
+            heart.style.position = 'absolute';
+            heart.style.left = '60%';
+            heart.style.top = '45%';
+            heart.style.transform = 'translate(-50%, -50%)';
+
+            // 添加到容器
+            container.appendChild(heart);
+
+            // 动画：先显示，然后向右上方移动
+            setTimeout(() => {
+                heart.style.transition = 'all 0.3s ease-out';
+                heart.style.opacity = '1';
+                heart.style.transform = 'translate(-50%, -50%) scale(1.2)';
+
+                // 短暂延迟后开始移动
+                setTimeout(() => {
+                    const targetX = 200 + Math.random() * 100; // 随机X偏移
+                    const targetY = -50 - Math.random() * 50; // 随机Y偏移
+                    const duration = 2 + Math.random() * 1; // 随机持续时间
+
+                    heart.style.transition = `all ${duration}s linear`;
+                    heart.style.left = '100%';
+                    heart.style.top = '0%';
+                    heart.style.transform = `translate(${targetX}px, ${targetY}px) rotate(${Math.random() * 30}deg)`;
+                    heart.style.opacity = '0';
+
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        container.removeChild(heart);
+                    }, duration * 1000);
+                }, 300);
+            }, 10);
+        };
+
+        // 页面加载完成后执行
+        window.addEventListener('load', () => {
+            // 创建技能雷达图
+            createSkillsChart();
+
+            // 检查初始滚动位置的动画
+            checkScrollAnimation();
+
+            // 创建多样化背景元素
+            createBackgroundElements();
+
+            // 每15秒重新创建一次背景元素
+            setInterval(createBackgroundElements, 60000);
+
+            // 开始发射爱心动画
+            createShootingHearts();
+
+            // 每隔一段时间发射一个爱心
+            setInterval(createShootingHearts, 3000 + Math.random() * 2000);
+        });
+    </script>
+</body>
+</html>
